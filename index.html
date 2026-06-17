@@ -114,13 +114,13 @@
     .hero {
       position: relative;
       z-index: 1;
-      min-height: 100vh;
+      min-height: 88vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 100px 24px 80px;
+      padding: 100px 24px 72px;
     }
     .badge {
       display: inline-flex;
@@ -162,7 +162,13 @@
       font-weight: 500;
       color: #aaa;
       letter-spacing: -0.02em;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
+    }
+    .hero-sub {
+      font-size: clamp(13px, 1.5vw, 15px);
+      color: var(--muted2);
+      letter-spacing: 0.01em;
+      margin-bottom: 28px;
     }
     .hero-desc {
       font-size: 15px;
@@ -325,6 +331,48 @@
       color: var(--muted);
     }
 
+    /* ── HERO QUOTE STRIP ── */
+    .hero-quote-strip {
+      position: relative; z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .hero-quote-strip::before {
+      content: "";
+      flex-shrink: 0;
+      width: 3px;
+      height: 48px;
+      border-radius: 2px;
+      background: linear-gradient(to bottom, var(--blue), transparent);
+    }
+    .hero-quote-text {
+      font-size: clamp(15px, 2vw, 18px);
+      color: #999;
+      font-weight: 400;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── ABOUT ── */
+    .about-block {
+      margin-top: 0;
+      padding: 40px 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-card);
+    }
+    .about-text {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 640px;
+    }
+    .about-text + .about-text { margin-top: 14px; }
+
     /* ── MISSION ── */
     .mission-block {
       margin-top: 56px;
@@ -416,18 +464,6 @@
       color: var(--muted);
       line-height: 1.6;
     }
-    .platform-status {
-      display: inline-block;
-      margin-top: 16px;
-      font-size: 11px;
-      color: var(--muted2);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2px 8px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
     /* ── FOOTER ── */
     .footer-wrap {
       position: relative; z-index: 1;
@@ -470,7 +506,7 @@
     <div class="nav-right">
       <a class="nav-link" href="#how-it-works">Architecture</a>
       <a class="nav-link" href="#platform">Platform</a>
-      <a class="nav-link" href="#mission">Mission</a>
+      <a class="nav-link" href="#about">About</a>
       <a class="nav-cta" href="#platform">Get Started</a>
     </div>
   </nav>
@@ -483,6 +519,7 @@
     </div>
     <h1 class="reveal">Flux</h1>
     <div class="hero-tagline reveal">Connecting Fragmented Markets</div>
+    <div class="hero-sub reveal">Real-Time Infrastructure for Monitoring, Analytics and Automation</div>
     <p class="hero-desc reveal">
       Flux provides the infrastructure layer for real-time market monitoring, analytics, and automation.
       Built for modern event-driven systems operating across fragmented market environments.
@@ -490,6 +527,15 @@
     <div class="cta-group reveal">
       <a class="btn btn-primary" href="#platform">Explore Platform</a>
       <a class="btn btn-ghost" href="#how-it-works">How it works</a>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- MISSION QUOTE STRIP -->
+  <div class="hero-quote-strip reveal">
+    <div class="hero-quote-text">
+      "Markets function best when information, liquidity, and participants remain connected."
     </div>
   </div>
 
@@ -633,6 +679,10 @@
       </div>
 
     </div>
+
+    <p class="tech-sub-desc reveal" style="margin-top:32px;">
+      Built on modern cloud infrastructure using AWS, Redis, WebSocket streaming, and event-driven systems.
+    </p>
   </section>
 
   <hr class="divider" />
@@ -653,6 +703,22 @@
 
   <hr class="divider" />
 
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="section-label reveal">About</div>
+    <h2 class="section-title reveal">About Flux</h2>
+    <div class="about-block reveal">
+      <p class="about-text">
+        Flux is a market infrastructure project focused on real-time monitoring, analytics, and automation.
+      </p>
+      <p class="about-text">
+        Built around event-driven architecture and scalable data systems, Flux provides the foundation for connected market intelligence.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
   <!-- PLATFORM COMPONENTS -->
   <section class="section" id="platform">
     <div class="section-label reveal">Platform</div>
@@ -667,28 +733,24 @@
         <div class="platform-tag">Monitor</div>
         <div class="platform-title">Flux Monitor</div>
         <div class="platform-desc">Real-time monitoring and alerting across market venues and data sources.</div>
-        <span class="platform-status">Live</span>
       </div>
 
       <div class="platform-card reveal">
         <div class="platform-tag">Analytics</div>
         <div class="platform-title">Flux Analytics</div>
         <div class="platform-desc">Market intelligence and data exploration through scalable processing pipelines.</div>
-        <span class="platform-status">Live</span>
       </div>
 
       <div class="platform-card reveal">
         <div class="platform-tag">API</div>
         <div class="platform-title">Flux API</div>
         <div class="platform-desc">Programmatic access to infrastructure services and market data streams.</div>
-        <span class="platform-status">Coming Soon</span>
       </div>
 
       <div class="platform-card reveal">
         <div class="platform-tag">News</div>
         <div class="platform-title">Flux News</div>
         <div class="platform-desc">Event aggregation and information delivery from fragmented market sources.</div>
-        <span class="platform-status">Live</span>
       </div>
 
     </div>
@@ -698,7 +760,8 @@
   <div class="footer-wrap">
     <div class="footer-brand">
       <div class="footer-logo">Flux</div>
-      <div class="footer-tagline">Building the infrastructure layer for modern markets.</div>
+      <div class="footer-tagline">Connecting Fragmented Markets</div>
+      <div class="footer-tagline" style="margin-top:4px; color: var(--muted2);">Real-Time Infrastructure for Monitoring, Analytics and Automation</div>
     </div>
     <div class="footer-copy">© 2025 Flux</div>
   </div>
