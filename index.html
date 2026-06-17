@@ -220,8 +220,8 @@
     }
     .section-desc {
       color: var(--muted);
-      max-width: 500px;
-      font-size: 15px;
+      max-width: 520px;
+      font-size: 16px;
       line-height: 1.7;
     }
     .divider {
@@ -268,8 +268,8 @@
     }
     .arch-node-icon svg { width: 18px; height: 18px; }
     .arch-node-text { flex: 1; }
-    .arch-node-title { font-size: 14px; font-weight: 600; color: var(--text); }
-    .arch-node-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .arch-node-title { font-size: 15px; font-weight: 600; color: var(--text); }
+    .arch-node-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
     .arch-arrow {
       width: 1px;
       height: 32px;
@@ -297,38 +297,20 @@
     }
 
     /* ── TECH SECTION ── */
-    .tech-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-top: 48px;
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 40px;
     }
-    .tech-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px;
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    }
-    .tech-card:hover {
-      border-color: var(--border-hover);
-      background: var(--bg-card-hover);
-      transform: translateY(-2px);
-    }
-    .tech-card-icon {
-      width: 32px; height: 32px;
-      border-radius: 7px;
-      background: var(--blue-dim);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--blue);
-      margin-bottom: 12px;
-    }
-    .tech-card-icon svg { width: 16px; height: 16px; }
-    .tech-card-name { font-size: 13px; font-weight: 600; color: var(--text); }
-    .tech-sub-desc {
-      margin-top: 32px;
-      font-size: 14px;
+    .tech-tag {
+      font-size: 13px;
       color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 14px;
+      background: var(--bg-card);
+      letter-spacing: 0.02em;
     }
 
     /* ── HERO QUOTE STRIP ── */
@@ -460,7 +442,7 @@
       letter-spacing: -0.01em;
     }
     .platform-desc {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--muted);
       line-height: 1.6;
     }
