@@ -3,22 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flux — Connecting Fragmented Markets</title>
+  <title>Flux — Real-Time Market Infrastructure</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #080808;
-      --bg-card: #0f0f0f;
-      --bg-card-hover: #141414;
-      --border: #1a1a1a;
-      --border-hover: #2a2a2a;
+      --bg: #0a0a0a;
+      --bg-card: #111111;
+      --border: #1f1f1f;
       --text: #ededed;
-      --muted: #777;
-      --muted2: #555;
+      --muted: #888;
       --accent: #fff;
       --blue: #3b82f6;
-      --blue-dim: rgba(59,130,246,0.12);
     }
 
     html { scroll-behavior: smooth; }
@@ -26,39 +22,13 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
       font-size: 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
     }
 
-    /* ── ANIMATED BACKGROUND ── */
-    .bg-orbs {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.07;
-      animation: drift 20s ease-in-out infinite;
-    }
-    .orb-1 { width: 600px; height: 600px; background: #3b82f6; top: -200px; left: -100px; animation-delay: 0s; }
-    .orb-2 { width: 500px; height: 500px; background: #6366f1; top: 40%; right: -150px; animation-delay: -7s; animation-duration: 25s; }
-    .orb-3 { width: 400px; height: 400px; background: #0ea5e9; bottom: 10%; left: 30%; animation-delay: -14s; animation-duration: 18s; }
-
-    @keyframes drift {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33%       { transform: translate(40px, -30px) scale(1.05); }
-      66%       { transform: translate(-30px, 20px) scale(0.97); }
-    }
-
-    /* ── NAV ── */
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -66,714 +36,404 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
+      padding: 0 32px;
       height: 60px;
       border-bottom: 1px solid var(--border);
-      background: rgba(8,8,8,0.8);
-      backdrop-filter: blur(16px);
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
     }
+
     .nav-logo {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 700;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.02em;
       color: var(--accent);
       text-decoration: none;
     }
-    .nav-right { display: flex; align-items: center; gap: 24px; }
-    .nav-link {
-      font-size: 13px;
+
+    .nav-badge {
+      font-size: 11px;
       color: var(--muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-    .nav-link:hover { color: var(--text); }
-    .nav-cta {
-      font-size: 13px;
-      font-weight: 500;
-      color: #000;
-      background: #fff;
-      border-radius: 6px;
-      padding: 7px 16px;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* ── SCROLL FADE-IN ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 88vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 100px 24px 72px;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
     }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      font-size: 11px;
+      gap: 6px;
+      font-size: 12px;
       color: var(--muted);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 5px 14px;
-      margin-bottom: 36px;
-      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      margin-bottom: 32px;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      background: rgba(255,255,255,0.03);
     }
+
     .badge-dot {
-      width: 6px; height: 6px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: var(--blue);
-      animation: pulse 2.5s ease-in-out infinite;
+      animation: pulse 2s ease-in-out infinite;
     }
+
     @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
-      50%       { opacity: 0.5; box-shadow: 0 0 0 6px rgba(59,130,246,0); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
+
     h1 {
-      font-size: clamp(52px, 9vw, 96px);
+      font-size: clamp(48px, 8vw, 88px);
       font-weight: 800;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.04em;
       line-height: 1;
-      margin-bottom: 20px;
-      background: linear-gradient(160deg, #ffffff 30%, #404040);
+      margin-bottom: 24px;
+      background: linear-gradient(160deg, #fff 40%, #555);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .hero-tagline {
-      font-size: clamp(18px, 3vw, 26px);
-      font-weight: 500;
-      color: #aaa;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-    .hero-sub {
-      font-size: clamp(13px, 1.5vw, 15px);
-      color: var(--muted2);
-      letter-spacing: 0.01em;
-      margin-bottom: 28px;
-    }
-    .hero-desc {
-      font-size: 15px;
+
+    .subtitle {
+      font-size: clamp(16px, 2.5vw, 22px);
       color: var(--muted);
-      max-width: 500px;
+      max-width: 540px;
       margin: 0 auto 48px;
-      line-height: 1.75;
+      line-height: 1.7;
     }
+
     .cta-group {
-      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
+
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 11px 22px;
-      border-radius: 7px;
-      font-size: 14px; font-weight: 500;
-      text-decoration: none; cursor: pointer; border: none;
-      transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s, transform 0.15s;
     }
-    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-primary { background: #fff; color: #000; box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-    .btn-ghost {
-      background: transparent; color: var(--muted);
+
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-primary {
+      background: #fff;
+      color: #000;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--muted);
       border: 1px solid var(--border);
     }
-    .btn-ghost:hover { color: var(--text); border-color: #333; }
 
-    /* ── SECTION BASE ── */
-    .section {
-      position: relative; z-index: 1;
+    .btn-secondary:hover { color: var(--text); border-color: #444; }
+
+    /* SECTION */
+    section {
       padding: 100px 24px;
       max-width: 1080px;
       margin: 0 auto;
     }
+
     .section-label {
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--blue);
-      margin-bottom: 14px;
-      font-weight: 500;
+      margin-bottom: 16px;
     }
+
     .section-title {
       font-size: clamp(28px, 4vw, 42px);
       font-weight: 700;
       letter-spacing: -0.03em;
-      margin-bottom: 14px;
-      line-height: 1.15;
+      margin-bottom: 16px;
     }
+
     .section-desc {
       color: var(--muted);
-      max-width: 500px;
-      font-size: 15px;
-      line-height: 1.7;
+      max-width: 520px;
+      font-size: 16px;
     }
+
+    /* DIVIDER */
     .divider {
       border: none;
       border-top: 1px solid var(--border);
       max-width: 1080px;
       margin: 0 auto;
-      position: relative; z-index: 1;
     }
 
-    /* ── ARCHITECTURE ── */
-    .arch-diagram {
-      margin-top: 64px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-    }
-    .arch-node {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 28px;
-      width: 100%;
-      max-width: 480px;
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-      cursor: default;
-    }
-    .arch-node:hover {
-      border-color: var(--border-hover);
-      background: var(--bg-card-hover);
-      transform: translateX(4px);
-    }
-    .arch-node-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      background: var(--blue-dim);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      color: var(--blue);
-    }
-    .arch-node-icon svg { width: 18px; height: 18px; }
-    .arch-node-text { flex: 1; }
-    .arch-node-title { font-size: 14px; font-weight: 600; color: var(--text); }
-    .arch-node-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .arch-arrow {
-      width: 1px;
-      height: 32px;
-      background: linear-gradient(to bottom, var(--border), transparent);
-      position: relative;
-      margin: 0 auto;
-    }
-    .arch-arrow::after {
-      content: "";
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 7px solid var(--border);
-    }
-    .arch-caption {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 14px;
-      color: var(--muted);
-      max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* ── TECH SECTION ── */
-    .tech-grid {
+    /* FEATURES */
+    .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
-      margin-top: 48px;
-    }
-    .tech-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px;
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-    }
-    .tech-card:hover {
-      border-color: var(--border-hover);
-      background: var(--bg-card-hover);
-      transform: translateY(-2px);
-    }
-    .tech-card-icon {
-      width: 32px; height: 32px;
-      border-radius: 7px;
-      background: var(--blue-dim);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--blue);
-      margin-bottom: 12px;
-    }
-    .tech-card-icon svg { width: 16px; height: 16px; }
-    .tech-card-name { font-size: 13px; font-weight: 600; color: var(--text); }
-    .tech-sub-desc {
-      margin-top: 32px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    /* ── HERO QUOTE STRIP ── */
-    .hero-quote-strip {
-      position: relative; z-index: 1;
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 48px 24px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .hero-quote-strip::before {
-      content: "";
-      flex-shrink: 0;
-      width: 3px;
-      height: 48px;
-      border-radius: 2px;
-      background: linear-gradient(to bottom, var(--blue), transparent);
-    }
-    .hero-quote-text {
-      font-size: clamp(15px, 2vw, 18px);
-      color: #999;
-      font-weight: 400;
-      line-height: 1.55;
-      letter-spacing: -0.01em;
-    }
-
-    /* ── ABOUT ── */
-    .about-block {
-      margin-top: 0;
-      padding: 40px 48px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--bg-card);
-    }
-    .about-text {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 640px;
-    }
-    .about-text + .about-text { margin-top: 14px; }
-
-    /* ── MISSION ── */
-    .mission-block {
-      margin-top: 56px;
-      padding: 56px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--bg-card);
-      position: relative;
-      overflow: hidden;
-    }
-    .mission-block::before {
-      content: "";
-      position: absolute;
-      top: -120px; right: -120px;
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .mission-block::after {
-      content: "";
-      position: absolute;
-      bottom: -80px; left: -80px;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .mission-quote {
-      font-size: clamp(18px, 2.5vw, 24px);
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      line-height: 1.5;
-      color: var(--text);
-      max-width: 620px;
-      position: relative; z-index: 1;
-    }
-    .mission-body {
-      margin-top: 20px;
-      font-size: 15px;
-      color: var(--muted);
-      max-width: 580px;
-      line-height: 1.75;
-      position: relative; z-index: 1;
-    }
-
-    /* ── PLATFORM COMPONENTS ── */
-    .platform-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
       margin-top: 56px;
     }
-    .platform-card {
+
+    .feature-card {
       background: var(--bg-card);
       padding: 32px;
       transition: background 0.2s;
-      position: relative;
     }
-    .platform-card:hover { background: var(--bg-card-hover); }
-    .platform-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--blue-dim), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .platform-card:hover::before { opacity: 1; }
-    .platform-tag {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+
+    .feature-card:hover { background: #161616; }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 20px;
       color: var(--blue);
+    }
+
+    .feature-title {
+      font-size: 16px;
       font-weight: 600;
       margin-bottom: 10px;
     }
-    .platform-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      letter-spacing: -0.01em;
-    }
-    .platform-desc {
-      font-size: 13px;
+
+    .feature-desc {
+      font-size: 14px;
       color: var(--muted);
       line-height: 1.6;
     }
-    /* ── FOOTER ── */
-    .footer-wrap {
-      position: relative; z-index: 1;
+
+    /* TECH STACK */
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 40px;
+    }
+
+    .tech-tag {
+      font-size: 13px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 14px;
+      background: var(--bg-card);
+      letter-spacing: 0.02em;
+    }
+
+    /* MISSION */
+    .mission-block {
+      margin-top: 56px;
+      padding: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-block::before {
+      content: "";
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .mission-text {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+      max-width: 560px;
+    }
+
+    .mission-sub {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* FOOTER */
+    footer {
       border-top: 1px solid var(--border);
-      padding: 48px 24px;
+      padding: 40px 24px;
       max-width: 1080px;
       margin: 0 auto;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 24px;
+      gap: 16px;
     }
-    .footer-brand { max-width: 280px; }
-    .footer-logo { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-    .footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .footer-copy { font-size: 12px; color: var(--muted2); margin-top: auto; align-self: flex-end; }
 
-    @media (max-width: 640px) {
-      nav { padding: 0 20px; }
-      .nav-right .nav-link { display: none; }
+    .footer-logo {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-right {
+      font-size: 12px;
+      color: #444;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
       .mission-block { padding: 32px 24px; }
-      .footer-wrap { flex-direction: column; }
-      .footer-copy { align-self: auto; }
+      footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-  <!-- BACKGROUND ORBS -->
-  <div class="bg-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-
   <!-- NAV -->
   <nav>
     <a class="nav-logo" href="#">Flux</a>
-    <div class="nav-right">
-      <a class="nav-link" href="#how-it-works">Architecture</a>
-      <a class="nav-link" href="#platform">Platform</a>
-      <a class="nav-link" href="#about">About</a>
-      <a class="nav-cta" href="#platform">Get Started</a>
-    </div>
+    <span class="nav-badge">Infrastructure</span>
   </nav>
 
   <!-- HERO -->
   <div class="hero">
-    <div class="badge reveal">
+    <div class="badge">
       <span class="badge-dot"></span>
-      Market Infrastructure
+      Real-Time Infrastructure
     </div>
-    <h1 class="reveal">Flux</h1>
-    <div class="hero-tagline reveal">Connecting Fragmented Markets</div>
-    <div class="hero-sub reveal">Real-Time Infrastructure for Monitoring, Analytics and Automation</div>
-    <p class="hero-desc reveal">
-      Flux provides the infrastructure layer for real-time market monitoring, analytics, and automation.
-      Built for modern event-driven systems operating across fragmented market environments.
+    <h1>Flux</h1>
+    <p class="subtitle">
+      Real-time market monitoring, analytics, and automation.<br>
+      Built on event-driven systems and scalable data pipelines.
     </p>
-    <div class="cta-group reveal">
-      <a class="btn btn-primary" href="#platform">Explore Platform</a>
-      <a class="btn btn-ghost" href="#how-it-works">How it works</a>
+    <div class="cta-group">
+      <a class="btn btn-primary" href="#features">Get Started</a>
+      <a class="btn btn-secondary" href="#mission">Learn More</a>
     </div>
   </div>
 
   <hr class="divider" />
 
-  <!-- MISSION QUOTE STRIP -->
-  <div class="hero-quote-strip reveal">
-    <div class="hero-quote-text">
-      "Markets function best when information, liquidity, and participants remain connected."
-    </div>
-  </div>
-
-  <hr class="divider" />
-
-  <!-- ARCHITECTURE -->
-  <section class="section" id="how-it-works">
-    <div class="section-label reveal">Architecture</div>
-    <h2 class="section-title reveal">How Flux Works</h2>
-    <p class="section-desc reveal">
-      A layered event-driven architecture — from raw data ingestion to intelligent execution.
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-label">Platform</div>
+    <h2 class="section-title">Everything you need for market data</h2>
+    <p class="section-desc">
+      Flux provides the infrastructure layer that connects data streams, processing, and automation in one unified system.
     </p>
 
-    <div class="arch-diagram">
-
-      <div class="arch-node reveal">
-        <div class="arch-node-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253"/>
-          </svg>
-        </div>
-        <div class="arch-node-text">
-          <div class="arch-node-title">Market Data Sources</div>
-          <div class="arch-node-sub">Multi-venue feeds, news, exchange announcements</div>
-        </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+        </svg>
+        <div class="feature-title">Real-Time Monitoring</div>
+        <div class="feature-desc">Monitor market activity through streaming and event-driven data systems with sub-second latency.</div>
       </div>
-
-      <div class="arch-arrow"></div>
-
-      <div class="arch-node reveal">
-        <div class="arch-node-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
-          </svg>
-        </div>
-        <div class="arch-node-text">
-          <div class="arch-node-title">Event Processing Layer</div>
-          <div class="arch-node-sub">Real-time ingestion, deduplication, Redis messaging</div>
-        </div>
+      <div class="feature-card">
+        <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"/>
+        </svg>
+        <div class="feature-title">Analytics</div>
+        <div class="feature-desc">Transform raw data into actionable insights through scalable processing pipelines.</div>
       </div>
-
-      <div class="arch-arrow"></div>
-
-      <div class="arch-node reveal">
-        <div class="arch-node-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"/>
-          </svg>
-        </div>
-        <div class="arch-node-text">
-          <div class="arch-node-title">Analytics & Intelligence</div>
-          <div class="arch-node-sub">Signal processing, similarity detection, scoring</div>
-        </div>
+      <div class="feature-card">
+        <svg class="feature-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <div class="feature-title">Automation</div>
+        <div class="feature-desc">Automate workflows and operational processes with reliable, programmable infrastructure.</div>
       </div>
-
-      <div class="arch-arrow"></div>
-
-      <div class="arch-node reveal">
-        <div class="arch-node-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-        </div>
-        <div class="arch-node-text">
-          <div class="arch-node-title">Execution & Automation</div>
-          <div class="arch-node-sub">Workflow triggers, risk controls, downstream delivery</div>
-        </div>
-      </div>
-
     </div>
-
-    <p class="arch-caption reveal">
-      Flux is built around an event-driven architecture designed for reliability, scalability, and low-latency processing.
-    </p>
   </section>
 
   <hr class="divider" />
 
   <!-- TECHNOLOGY -->
-  <section class="section" id="technology">
-    <div class="section-label reveal">Technology</div>
-    <h2 class="section-title reveal">Built on Modern Infrastructure</h2>
-    <p class="section-desc reveal">Cloud-native infrastructure designed for real-time systems.</p>
-
-    <div class="tech-grid">
-
-      <div class="tech-card reveal">
-        <div class="tech-card-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"/>
-          </svg>
-        </div>
-        <div class="tech-card-name">AWS Cloud</div>
-      </div>
-
-      <div class="tech-card reveal">
-        <div class="tech-card-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
-          </svg>
-        </div>
-        <div class="tech-card-name">WebSocket Streaming</div>
-      </div>
-
-      <div class="tech-card reveal">
-        <div class="tech-card-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"/>
-          </svg>
-        </div>
-        <div class="tech-card-name">Redis Messaging</div>
-      </div>
-
-      <div class="tech-card reveal">
-        <div class="tech-card-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
-          </svg>
-        </div>
-        <div class="tech-card-name">Event Processing</div>
-      </div>
-
-      <div class="tech-card reveal">
-        <div class="tech-card-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
-          </svg>
-        </div>
-        <div class="tech-card-name">Multi-Venue Connectivity</div>
-      </div>
-
-      <div class="tech-card reveal">
-        <div class="tech-card-icon">
-          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-        </div>
-        <div class="tech-card-name">Automation Frameworks</div>
-      </div>
-
-    </div>
-
-    <p class="tech-sub-desc reveal" style="margin-top:32px;">
-      Built on modern cloud infrastructure using AWS, Redis, WebSocket streaming, and event-driven systems.
+  <section id="technology">
+    <div class="section-label">Technology</div>
+    <h2 class="section-title">Modern stack, built for scale</h2>
+    <p class="section-desc">
+      Flux is built on battle-tested technologies designed for high-throughput, low-latency data workloads.
     </p>
+    <div class="tech-list">
+      <span class="tech-tag">WebSocket Streaming</span>
+      <span class="tech-tag">Redis Messaging</span>
+      <span class="tech-tag">Cloud Infrastructure</span>
+      <span class="tech-tag">Event Processing</span>
+      <span class="tech-tag">Distributed Systems</span>
+      <span class="tech-tag">Data Pipelines</span>
+    </div>
   </section>
 
   <hr class="divider" />
 
   <!-- MISSION -->
-  <section class="section" id="mission">
-    <div class="section-label reveal">Mission</div>
-    <h2 class="section-title reveal">Our Mission</h2>
-    <div class="mission-block reveal">
-      <div class="mission-quote">
-        Markets function best when information, liquidity, and participants remain connected.
+  <section id="mission">
+    <div class="section-label">Mission</div>
+    <div class="mission-block">
+      <div class="mission-text">
+        Connecting fragmented markets through data and infrastructure.
       </div>
-      <div class="mission-body">
-        Flux helps reduce operational friction by providing infrastructure that bridges fragmented environments and enables real-time market intelligence.
+      <div class="mission-sub">
+        We build the foundation that modern market systems run on — reliable, fast, and scalable by design.
       </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- ABOUT -->
-  <section class="section" id="about">
-    <div class="section-label reveal">About</div>
-    <h2 class="section-title reveal">About Flux</h2>
-    <div class="about-block reveal">
-      <p class="about-text">
-        Flux is a market infrastructure project focused on real-time monitoring, analytics, and automation.
-      </p>
-      <p class="about-text">
-        Built around event-driven architecture and scalable data systems, Flux provides the foundation for connected market intelligence.
-      </p>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- PLATFORM COMPONENTS -->
-  <section class="section" id="platform">
-    <div class="section-label reveal">Platform</div>
-    <h2 class="section-title reveal">Platform Components</h2>
-    <p class="section-desc reveal">
-      A suite of integrated tools built on the same underlying infrastructure.
-    </p>
-
-    <div class="platform-grid">
-
-      <div class="platform-card reveal">
-        <div class="platform-tag">Monitor</div>
-        <div class="platform-title">Flux Monitor</div>
-        <div class="platform-desc">Real-time monitoring and alerting across market venues and data sources.</div>
-      </div>
-
-      <div class="platform-card reveal">
-        <div class="platform-tag">Analytics</div>
-        <div class="platform-title">Flux Analytics</div>
-        <div class="platform-desc">Market intelligence and data exploration through scalable processing pipelines.</div>
-      </div>
-
-      <div class="platform-card reveal">
-        <div class="platform-tag">API</div>
-        <div class="platform-title">Flux API</div>
-        <div class="platform-desc">Programmatic access to infrastructure services and market data streams.</div>
-      </div>
-
-      <div class="platform-card reveal">
-        <div class="platform-tag">News</div>
-        <div class="platform-title">Flux News</div>
-        <div class="platform-desc">Event aggregation and information delivery from fragmented market sources.</div>
-      </div>
-
     </div>
   </section>
 
   <!-- FOOTER -->
-  <div class="footer-wrap">
-    <div class="footer-brand">
+  <footer>
+    <div>
       <div class="footer-logo">Flux</div>
-      <div class="footer-tagline">Connecting Fragmented Markets</div>
-      <div class="footer-tagline" style="margin-top:4px; color: var(--muted2);">Real-Time Infrastructure for Monitoring, Analytics and Automation</div>
+      <div class="footer-tagline">Building the infrastructure layer for modern markets.</div>
     </div>
-    <div class="footer-copy">© 2025 Flux</div>
-  </div>
-
-  <!-- SCROLL REVEAL -->
-  <script>
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.12 }
-    );
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  </script>
+    <div class="footer-right">© 2025 Flux</div>
+  </footer>
 
 </body>
 </html>
